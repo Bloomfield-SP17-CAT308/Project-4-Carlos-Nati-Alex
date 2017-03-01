@@ -1,0 +1,8 @@
+Our goal is to create a dungeon system that the player will fight monsters (potentially together with
+a teammate) and protect an npc that tags along, asking the player(s) for help.
+
+Some of the mechanics we want to implement include..
+- NPC Dialogue?
+- Combat
+- Monster AI
+- Multiplayer using Networking
