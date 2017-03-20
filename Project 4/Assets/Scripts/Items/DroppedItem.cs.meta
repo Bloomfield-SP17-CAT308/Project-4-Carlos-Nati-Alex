@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3a6ee6d10e5016b40974a515d283da71
+timeCreated: 1489972494
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - effectPrefab: {fileID: 1303224817137996, guid: 01dab6d253d510c49963f5506b92ed81,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

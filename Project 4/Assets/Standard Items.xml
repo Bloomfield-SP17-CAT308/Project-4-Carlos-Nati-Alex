@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<StandardItems>
+	<Items>
+		<Item ItemId="0" Name="Wood">
+			<StackLimit>3</StackLimit>
+			<ItemSprite>Assets/Sprites/Log.png</ItemSprite>
+			<ItemPrefab>Assets/Prefabs/Resource Wood.prefab</ItemPrefab>
+		</Item>
+		<Item ItemId="1" Name="Stone">
+			<StackLimit>3</StackLimit>
+			<ItemSprite>Assets/Sprites/Stone.png</ItemSprite>
+			<ItemPrefab>Assets/Prefabs/Resource Stone.prefab</ItemPrefab>
+		</Item>
+		<Item ItemId="2" Name="String">
+			<StackLimit>3</StackLimit>
+			<ItemSprite>Assets/Sprites/String.png</ItemSprite>
+			<ItemPrefab>Assets/Prefabs/Resource String.prefab</ItemPrefab>
+		</Item>
+		<Item ItemId="3" Name="Basic Sword">
+			<StackLimit>1</StackLimit>
+			<ItemSprite>Assets/Sprites/Sword.png</ItemSprite>
+			<ItemPrefab>Assets/Prefabs/Weapon Sword.prefab</ItemPrefab>
+			<CraftingRecipe>{Item 0, 2}, {Item 1, 2}</CraftingRecipe>
+		</Item>
+		<Item ItemId="4" Name="Basic Staff">
+			<StackLimit>1</StackLimit>
+			<ItemSprite>Assets/Sprites/Staff.png</ItemSprite>
+			<ItemPrefab>Assets/Prefabs/Weapon Staff.prefab</ItemPrefab>
+			<CraftingRecipe>{Item 0, 3}, {Item 1, 1}</CraftingRecipe>
+		</Item>
+		<Item ItemId="5" Name="Basic Bow">
+			<StackLimit>1</StackLimit>
+			<ItemSprite>Assets/Sprites/Bow.png</ItemSprite>
+			<ItemPrefab>Assets/Prefabs/Weapon Bow.prefab</ItemPrefab>
+			<CraftingRecipe>{Item 0, 3}, {Item 2, 1}</CraftingRecipe>
+		</Item>
+	</Items>
+</StandardItems>

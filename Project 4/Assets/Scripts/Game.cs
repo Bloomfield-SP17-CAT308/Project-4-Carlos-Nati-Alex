@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 
 public class Game : NetworkBehaviour {
+
+	public GameObject inventPanelPrefab;
+	public GameObject droppedItemEffect;
 
 	private static Game instance;
 	private static Transform screenCanvas;
@@ -26,7 +30,17 @@ public class Game : NetworkBehaviour {
 		DontDestroyOnLoad(gameObject);
 	}
 
-	public override void OnStartLocalPlayer() {
-		Debug.Log("Started OnLocalPlayer!");
+	public void Start() {
+		SetScreenCanvas();
+		StandardItems.LoadStandardItems();
+		SceneManager.sceneLoaded += SceneChanged;
+	}
+
+	private void SceneChanged(Scene scene, LoadSceneMode mode) {
+		SetScreenCanvas();
+	}
+
+	private void SetScreenCanvas() {
+		screenCanvas = GameObject.FindGameObjectWithTag("Screen Canvas").transform;
 	}
 }

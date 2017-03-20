@@ -1,19 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class CameraMovement : MonoBehaviour {
+public class CameraMovement : NetworkBehaviour {
 
 	public float maxXRotation = 70;
-	public float distance = 15;
-	public float sensitivity = 50;
+	public float defaultDistance = 12;
 
-	private Transform player;
+	public float minDistance = 4;
+	public float maxDistance = 20;
+
+	public float tumbleSensitivity = 100;
+	public float dollySensitivity = 100;
+
+	private Transform playerTransform;
+	private Player player;
 
 	private float cameraHorizontal, cameraVertical;
 	private Vector3 deltaRotation;
 	private Transform playerOrientation;
 	private CursorMode cursorMode = CursorMode.ScreenUI;
+	private float currentDistance;
+
+	public Transform PlayerTransform {
+		get { return playerTransform; }
+		set {
+			playerTransform = value;
+			player = playerTransform.GetComponent<Player>();
+		}
+	}
 
 	public Transform PlayerOrientation {
 		get { return playerOrientation; }
@@ -24,20 +40,41 @@ public class CameraMovement : MonoBehaviour {
 	}
 
 	public void Start() {
-		player = GameObject.FindGameObjectWithTag("Player").transform;
 		playerOrientation = transform.FindChild("Player Orientation");
 		transform.rotation = Quaternion.Euler(30, transform.eulerAngles.y, transform.eulerAngles.z);
+
+		currentDistance = defaultDistance;
+		ToggleCursorMode();
 	}
 
 	public void Update() {
-		if (cursorMode == CursorMode.WorldMovement) {
-			cameraHorizontal = Input.GetAxis("Mouse X");
-			cameraVertical = - Input.GetAxis("Mouse Y");
-		}
+		if (!player.isLocalPlayer)
+			return;
 		deltaRotation = default(Vector3);
 
-		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
+		currentDistance -= Input.GetAxis("Mouse ScrollWheel") * dollySensitivity * Time.deltaTime;
+		if (Input.GetKeyDown(KeyCode.Mouse2)) {
+			currentDistance = defaultDistance;
+			transform.rotation = Quaternion.Euler(30, playerTransform.eulerAngles.y, 0);
+			UpdatePosition();
+			return;
+		}
+
+		if (currentDistance < minDistance)
+			currentDistance = minDistance;
+		else if (currentDistance > maxDistance)
+			currentDistance = maxDistance;
+
+
+		if (cursorMode == CursorMode.WorldMovement) {
+			cameraHorizontal = Input.GetAxis("Mouse X");
+			cameraVertical = -Input.GetAxis("Mouse Y");
+		}
+
+		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl)) {
 			ToggleCursorMode();
+			return;
+		}
 
 		if (cameraHorizontal != 0)
 			deltaRotation.y = cameraHorizontal;
@@ -45,20 +82,22 @@ public class CameraMovement : MonoBehaviour {
 			deltaRotation.x = cameraVertical;
 		deltaRotation.z = 0;
 
-		transform.Rotate(deltaRotation * sensitivity * Time.deltaTime);
+		if (cursorMode == CursorMode.WorldMovement) {
+			transform.Rotate(deltaRotation * tumbleSensitivity * Time.deltaTime);
 
-		//Make sure x-rotation is not too extreme, and that z-rotation is 0. (The Vector3 components)
-		if (transform.eulerAngles.x > maxXRotation && transform.eulerAngles.x <= 180)
-			transform.rotation = Quaternion.Euler(maxXRotation, transform.eulerAngles.y, 0);
-		else if (transform.eulerAngles.x < 360 - maxXRotation && transform.eulerAngles.x > 180)
-			transform.rotation = Quaternion.Euler(360 - maxXRotation, transform.eulerAngles.y, 0);
-		else
-			transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, 0);
+			//Make sure x-rotation is not too extreme, and that z-rotation is 0. (The Vector3 components)
+			if (transform.eulerAngles.x > maxXRotation && transform.eulerAngles.x <= 180)
+				transform.rotation = Quaternion.Euler(maxXRotation, transform.eulerAngles.y, 0);
+			else if (transform.eulerAngles.x < 360 - maxXRotation && transform.eulerAngles.x > 180)
+				transform.rotation = Quaternion.Euler(360 - maxXRotation, transform.eulerAngles.y, 0);
+			else
+				transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, 0);
 
-		//Keep the Player Orientation's transform rotated with this camera only in the y-axis.
-		//Keep the Player Orientation's transform's rotation at 0 (relative to the world) in the x and z-axes.
-		playerOrientation.rotation = Quaternion.Euler(0, playerOrientation.eulerAngles.y, 0);
-
+			//Keep the Player Orientation's transform rotated with this camera only in the y-axis.
+			//Keep the Player Orientation's transform's rotation at 0 (relative to the world) in the x and z-axes.
+			playerOrientation.rotation = Quaternion.Euler(0, playerOrientation.eulerAngles.y, 0);
+		}
+		
 
 		UpdatePosition();
 	}
@@ -69,16 +108,16 @@ public class CameraMovement : MonoBehaviour {
 	/// </summary>
 	private void UpdatePosition() {
 		Vector3 offset = new Vector3(
-			distance * Mathf.Cos((Mathf.PI / 180) * (transform.eulerAngles.x + 180)) * Mathf.Sin((Mathf.PI / 180) * (transform.eulerAngles.y)),
-			-distance * Mathf.Sin((Mathf.PI / 180) * (transform.eulerAngles.x + 180)),
+			currentDistance * Mathf.Cos((Mathf.PI / 180) * (transform.eulerAngles.x + 180)) * Mathf.Sin((Mathf.PI / 180) * (transform.eulerAngles.y)),
+			-currentDistance * Mathf.Sin((Mathf.PI / 180) * (transform.eulerAngles.x + 180)),
 			0
 		);
 
-		float args = Mathf.Pow(distance * Mathf.Cos((Mathf.PI / 180) * (transform.eulerAngles.x + 180)), 2) - (Mathf.Pow(distance * Mathf.Cos((Mathf.PI / 180) * (transform.eulerAngles.x + 180)) * Mathf.Sin((Mathf.PI / 180) * (transform.eulerAngles.y)), 2));
+		float args = Mathf.Pow(currentDistance * Mathf.Cos((Mathf.PI / 180) * (transform.eulerAngles.x + 180)), 2) - (Mathf.Pow(currentDistance * Mathf.Cos((Mathf.PI / 180) * (transform.eulerAngles.x + 180)) * Mathf.Sin((Mathf.PI / 180) * (transform.eulerAngles.y)), 2));
 
 		offset.z = (transform.eulerAngles.y < 270 && transform.eulerAngles.y > 90) ? Mathf.Sqrt(args) : -Mathf.Sqrt(args);
 
-		transform.position = player.position + offset;
+		transform.position = playerTransform.position + offset;
 	}
 
 	private void ToggleCursorMode() {
@@ -91,5 +130,6 @@ public class CameraMovement : MonoBehaviour {
 			Cursor.visible = true;
 			Cursor.lockState = CursorLockMode.None;
 		}
+		deltaRotation = default(Vector3);
 	}
 }

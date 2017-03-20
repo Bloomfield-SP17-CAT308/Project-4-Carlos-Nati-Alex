@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 124971565115753178}
   - component: {fileID: 81073435709259658}
   - component: {fileID: 114441274053782564}
+  - component: {fileID: 114491589693050760}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -66,7 +67,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1493940763114096}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 13.1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4263606710164808}
@@ -133,8 +134,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxXRotation: 70
-  distance: 15
-  sensitivity: 50
+  defaultDistance: 12
+  minDistance: 6
+  maxDistance: 20
+  tumbleSensitivity: 100
+  dollySensitivity: 50
+--- !u!114 &114491589693050760
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1493940763114096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 112
+    i1: 164
+    i2: 121
+    i3: 168
+    i4: 179
+    i5: 215
+    i6: 47
+    i7: 196
+    i8: 138
+    i9: 93
+    i10: 138
+    i11: 244
+    i12: 149
+    i13: 133
+    i14: 113
+    i15: 236
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!124 &124971565115753178
 Behaviour:
   m_ObjectHideFlags: 1

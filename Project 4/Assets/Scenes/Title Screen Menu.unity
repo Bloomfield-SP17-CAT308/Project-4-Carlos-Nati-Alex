@@ -315,8 +315,8 @@ GameObject:
   - component: {fileID: 1554502311}
   - component: {fileID: 1554502310}
   m_Layer: 5
-  m_Name: Canvas
-  m_TagString: Untagged
+  m_Name: Screen Canvas
+  m_TagString: Screen Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -428,17 +428,24 @@ MonoBehaviour:
   m_ServerBindToIP: 0
   m_ServerBindAddress: 
   m_NetworkAddress: localhost
-  m_DontDestroyOnLoad: 1
+  m_DontDestroyOnLoad: 0
   m_RunInBackground: 1
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 0}
+  m_PlayerPrefab: {fileID: 1302520401924528, guid: 98953b8850815274cab8b4fc659c0440,
+    type: 2}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
-  m_OfflineScene: 
-  m_OnlineScene: 
-  m_SpawnPrefabs: []
+  m_OfflineScene: Title Screen Menu
+  m_OnlineScene: Game
+  m_SpawnPrefabs:
+  - {fileID: 1481480082699854, guid: f14c1eefcaaaf494cad933b34fb954b1, type: 2}
+  - {fileID: 1741153664806110, guid: 1ae6489ff329a9a4a9e5a6a57cbcee53, type: 2}
+  - {fileID: 1152373541650312, guid: 8754053f44dcca84fa445be08e3a48f0, type: 2}
+  - {fileID: 1416746390245996, guid: c93593cfaf78b14479d2afc19e4acecb, type: 2}
+  - {fileID: 1145990131330550, guid: 9a8c4032388f7a54ea22f33717c1a944, type: 2}
+  - {fileID: 1588245817790952, guid: 3ab759f8fc6b4aa4aab29669fd91c43f, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -492,6 +499,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8090120d4b70d9445ad9b4017724b73b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventPanelPrefab: {fileID: 1255157808155204, guid: d60a9f91e18b7574d8170faf2b69703b,
+    type: 2}
+  droppedItemEffect: {fileID: 1303224817137996, guid: 01dab6d253d510c49963f5506b92ed81,
+    type: 2}
 --- !u!4 &2004125273
 Transform:
   m_ObjectHideFlags: 0
