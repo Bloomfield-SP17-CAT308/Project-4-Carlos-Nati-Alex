@@ -5,16 +5,14 @@ using UnityEngine.Networking;
 
 public class DroppedItem : NetworkBehaviour {
 
-	public Item item;
+	public int itemId;
 
 	private ParticleSystem effect;
+	private bool updating = true;
 
-
-	public void Awake() {
+	public void Start() {
+		Debug.Log("Start called for a dropped item!");
 		transform.SetParent(GameObject.FindGameObjectWithTag("Dropped Items").transform);
-
-		if (GetComponent<NetworkIdentity>() == null)
-			gameObject.AddComponent<NetworkIdentity>();
 
 		Mesh mesh = GetComponent<MeshFilter>().mesh;
 
@@ -27,11 +25,13 @@ public class DroppedItem : NetworkBehaviour {
 
 		transform.rotation = Quaternion.Euler(Random.Range(20, 70), transform.eulerAngles.y, transform.eulerAngles.z);
 		transform.position += Vector3.up * mesh.bounds.extents.y;
+
 		StartCoroutine(StartTrigger(2f));
 	}
 
 	public void Update() {
-		transform.Rotate(0, 180 * Time.deltaTime, 0, Space.World);
+		if (updating)
+			transform.Rotate(0, 180 * Time.deltaTime, 0, Space.World);
 	}
 
 	private IEnumerator StartTrigger(float delay) {
@@ -45,22 +45,39 @@ public class DroppedItem : NetworkBehaviour {
 		trigger.radius = 1;
 	}
 
+	//COMMANDS CAN ONLY RUN ON SCRIPTS FROM THE PLAYER'S UNIQUE, 1 PLAYER OBJECT!! (Cannot be here in this script)
+	//OR ON SCRIPTS ON A GAMEOBJECT WITH CLIENT AUTHORITY OVER A NON-PLAYER OBJECT
+
 	private IEnumerator PickedUp(Player player) {
-		player.GiveItem(item.ItemId);
-		gameObject.SetActive(false);
+		//Only try, on this client, to give the item to the player if that player is us -- the Local Player.
+		if (player.isLocalPlayer)
+			player.GiveItem(itemId);
 
-		ParticleSystem.MainModule main = effect.main;
-		main.loop = false;
-		float additionalTime = main.startLifetime.Evaluate(effect.time / main.duration, 1);
+		updating = false;
 
-		yield return new WaitForSeconds(effect.main.duration - effect.time + additionalTime);
-		GameObject.Destroy(effect.gameObject);
+		//The effect might be null because some Messages like OnTriggerStay are still sent even though this script is not enabled.
+		if (effect != null) {
+			MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>();
+			foreach (MeshRenderer r in renderers)
+				r.enabled = false;
+
+			ParticleSystem.MainModule main = effect.main;
+			main.loop = false;
+			float additionalTime = main.startLifetime.Evaluate(effect.time / main.duration, 1);
+
+			yield return new WaitForSeconds(effect.main.duration - effect.time + additionalTime);
+
+			GameObject.Destroy(effect.gameObject);
+		}
+
+		//if (isServer)
+		//	NetworkServer.UnSpawn(gameObject);
 		GameObject.Destroy(gameObject);
 		yield break;
 	}
 
 	public void OnTriggerStay(Collider other) {
-		if (other.tag == "Player")
-			StartCoroutine(PickedUp(other.GetComponent<Player>()));
+		if (enabled && other.tag == "Player")
+			StartCoroutine(PickedUp(other.gameObject.GetComponent<Player>()));
 	}
 }

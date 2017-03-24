@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 65518368414025182}
   - component: {fileID: 135145141068533070}
   - component: {fileID: 114667945569632762}
+  - component: {fileID: 114879741429016218}
+  - component: {fileID: 114000049984737094}
   m_Layer: 0
   m_Name: Resource String
   m_TagString: Untagged
@@ -163,6 +165,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.4, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &114000049984737094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1741153664806110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af4459fad1723294e84cd7c3795ff856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114667945569632762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,6 +208,18 @@ MonoBehaviour:
     i15: 83
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &114879741429016218
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1741153664806110}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6ee6d10e5016b40974a515d283da71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 2
 --- !u!135 &135145141068533070
 SphereCollider:
   m_ObjectHideFlags: 1

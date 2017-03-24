@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 65406957883252040}
   - component: {fileID: 135824689262771566}
   - component: {fileID: 114885800140832998}
+  - component: {fileID: 114113813131824568}
+  - component: {fileID: 114147554200243232}
   m_Layer: 0
   m_Name: Resource Stone
   m_TagString: Untagged
@@ -94,6 +96,29 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.3, z: 1.5}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &114113813131824568
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1481480082699854}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6ee6d10e5016b40974a515d283da71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 1
+--- !u!114 &114147554200243232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1481480082699854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af4459fad1723294e84cd7c3795ff856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114885800140832998
 MonoBehaviour:
   m_ObjectHideFlags: 1

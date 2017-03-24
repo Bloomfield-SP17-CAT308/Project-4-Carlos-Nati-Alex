@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33007199079423230}
   - component: {fileID: 23391481833041284}
   - component: {fileID: 114554623009572932}
+  - component: {fileID: 114578599815656444}
   m_Layer: 0
   m_Name: Weapon Sword
   m_TagString: Untagged
@@ -113,3 +114,15 @@ MonoBehaviour:
     i15: 63
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &114578599815656444
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1588245817790952}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6ee6d10e5016b40974a515d283da71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 3

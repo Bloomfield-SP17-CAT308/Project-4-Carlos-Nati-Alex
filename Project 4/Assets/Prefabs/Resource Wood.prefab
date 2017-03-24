@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 65166286872414064}
   - component: {fileID: 135430748739371074}
   - component: {fileID: 114409275264737464}
+  - component: {fileID: 114431953670231974}
+  - component: {fileID: 114794327325149788}
   m_Layer: 0
   m_Name: Resource Wood
   m_TagString: Untagged
@@ -127,6 +129,29 @@ MonoBehaviour:
     i15: 240
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &114431953670231974
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1152373541650312}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6ee6d10e5016b40974a515d283da71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 0
+--- !u!114 &114794327325149788
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1152373541650312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af4459fad1723294e84cd7c3795ff856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135430748739371074
 SphereCollider:
   m_ObjectHideFlags: 1

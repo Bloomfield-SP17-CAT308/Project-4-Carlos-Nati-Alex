@@ -31,8 +31,18 @@ public class Player : NetworkBehaviour {
 	Image[] inventSlotImages;
 	private int availableInventSlots = 9;
 
+	private PlayerInteractable[] nearbyInteractables;
+
 	public float Height {
 		get { return controller.height; }
+	}
+
+	public GameObject InventoryPanel {
+		get { return inventPanel; }
+	}
+
+	public int InventorySlots {
+		get { return inventItems.Length; }
 	}
 
 	public void Awake() {
@@ -40,6 +50,7 @@ public class Player : NetworkBehaviour {
 	}
 
 	public override void OnStartLocalPlayer() {
+		Game.Instance.LocalPlayer = this;
 		camera = GameObject.Instantiate(cameraPrefab);
 		cameraMovement = camera.GetComponent<CameraMovement>();
 		cameraMovement.PlayerTransform = transform;
@@ -66,7 +77,8 @@ public class Player : NetworkBehaviour {
 			inventPanel.SetActive(!inventPanel.activeSelf);
 
 		if (Input.GetKeyDown(KeyCode.G))
-			Drop(StandardItems.Items[UnityEngine.Random.Range(0, StandardItems.Items.Count)]);
+			CmdDrop(UnityEngine.Random.Range(0, StandardItems.Items.Count));
+			//CmdDrop(UnityEngine.Random.Range(0, StandardItems.Items.Count));
 	}
 
 	public void FixedUpdate() {
@@ -82,8 +94,8 @@ public class Player : NetworkBehaviour {
 		vSpeed -= 9.81f * gravityMultiplier * Time.fixedDeltaTime;
 		if (controller.isGrounded) {
 			vSpeed = 0;
-			if (Input.GetKey(KeyCode.Joystick1Button0) || Input.GetKey(KeyCode.Space))
-				vSpeed = initialJumpSpeed;
+			/*if (Input.GetKey(KeyCode.Joystick1Button0) || Input.GetKey(KeyCode.Space))
+				vSpeed = initialJumpSpeed;*/
 		}
 		//displacement.y = vSpeed; //This would be bad because we are transforming the direction, so displacement.y becomes unaligned with the world's y-axis
 
@@ -104,21 +116,24 @@ public class Player : NetworkBehaviour {
 
 
 	//Item Methods Begin Here
-	public void GiveItem(int itemId, int quantity = 1, bool givePartial = true) {
+
+	//This method was dangerously and uglily adapted for ONLY quantity = 1 to work
+	public bool GiveItem(int itemId, int quantity = 1) {
 		Item item = StandardItems.Items[itemId];
 		int spaceRequired;
-		if (quantity == 1)
+		if (quantity == 1) {
 			spaceRequired = 1;
-		else {
+		} else {
+			Debug.LogWarning("Careful! Attempting to give player more than one of the Item with ItemId " + itemId + "! (Logic was not properly set up, unexpected result may occur)");
 			spaceRequired = quantity / item.StackLimit;
 			if (quantity % item.StackLimit != 0)
 				spaceRequired++;
 		}
 
 		if (availableInventSlots == 0)
-			return;
-		else if (!givePartial && spaceRequired > availableInventSlots)
-			return;
+			return false;
+		else if (spaceRequired > availableInventSlots)
+			return false;
 
 		int remaining = quantity;
 		for (int i = 0; i < inventItems.Length; i++) {
@@ -129,16 +144,20 @@ public class Player : NetworkBehaviour {
 				inventSlotImages[i].color = Color.white;
 				availableInventSlots--;
 				remaining--;
-				Debug.Log("Putting " + item.Name + " (Quantity: " + inventQuantities[i] + ") at Inventory Slot " + i + ".");
 			}
 			if (availableInventSlots == 0 || remaining == 0)
-				return;
+				return true;
 		}
+		return true;
 	}
 
-	public Item RemoveItem(int inventSlotIndex) {
-		Item item = inventItems[inventSlotIndex];
-		inventQuantities[inventSlotIndex] = 0;
+	public Item RemoveItem(int index) {
+		Item item = inventItems[index];
+		Color previous = inventSlotImages[index].color;
+
+		inventItems[index] = null;
+		inventQuantities[index] = 0;
+		inventSlotImages[index].color = new Color(previous.r, previous.g, previous.b, 0);
 		availableInventSlots++;
 		return item;
 	}
@@ -151,20 +170,41 @@ public class Player : NetworkBehaviour {
 		return null;
 	}
 
-	public void DropItem(int inventSlotIndex) {
-		Item item = RemoveItem(inventSlotIndex);
-		Drop(item);
+	public void SwapItems(int index1, int index2) {
+		Item tempItem = inventItems[index1];
+		int tempQuantity = inventQuantities[index1];
+		Color tempColor = inventSlotImages[index1].color;
+		Sprite tempSprite = inventSlotImages[index1].sprite;
+
+		inventItems[index1] = inventItems[index2];
+		inventQuantities[index1] = inventQuantities[index2];
+		inventSlotImages[index1].color = inventSlotImages[index2].color;
+		inventSlotImages[index1].sprite = inventSlotImages[index2].sprite;
+
+		inventItems[index2] = tempItem;
+		inventQuantities[index2] = tempQuantity;
+		inventSlotImages[index2].color = tempColor;
+		inventSlotImages[index2].sprite = tempSprite;
+
+	}
+
+	public void DropItem(int index) {
+		if (inventItems[index] == null)
+			return;
+		Item item = RemoveItem(index);
+		CmdDrop(item.ItemId);
 	}
 
 	public void DropFirstItem(int itemId) {
 		Item item = RemoveFirstItem(itemId);
 		if (item == null)
 			return;
-		Drop(item);
+		CmdDrop(itemId);
 	}
 
-	private void Drop(Item item) {
-		GameObject droppedObject = GameObject.Instantiate(item.Prefab);
+	[Command]
+	private void CmdDrop(int itemId) {
+		GameObject droppedObject = GameObject.Instantiate(StandardItems.Items[itemId].Prefab);
 
 		RaycastHit hit;
 		if (Physics.Raycast(new Ray(transform.position + 2 * transform.forward + 2 * Vector3.up, Vector3.down), out hit, 20, 1 << 8))
@@ -172,9 +212,17 @@ public class Player : NetworkBehaviour {
 		else
 			droppedObject.transform.position = transform.position;
 
-		DroppedItem droppedItem = droppedObject.AddComponent<DroppedItem>();
-		droppedItem.item = item;
-
 		NetworkServer.Spawn(droppedObject);
+
+
+		Debug.Log("Wow");
+		RpcDrop(droppedObject.GetComponent<NetworkIdentity>().netId);
+	}
+
+	[ClientRpc]
+	private void RpcDrop(NetworkInstanceId netId) {
+		GameObject droppedObject = (isClient) ? ClientScene.FindLocalObject(netId) : NetworkServer.FindLocalObject(netId);
+
+		droppedObject.GetComponent<DroppedItem>().enabled = true;
 	}
 }

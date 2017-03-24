@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 33130220620696948}
   - component: {fileID: 23970992087187566}
   - component: {fileID: 114920393941638310}
+  - component: {fileID: 114634361009129458}
   m_Layer: 0
   m_Name: Weapon Bow
   m_TagString: Untagged
@@ -219,6 +220,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1023668645232022}
   m_Mesh: {fileID: 4300002, guid: a781fce8b18027f4796f005b8dbe92ef, type: 3}
+--- !u!114 &114634361009129458
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1416746390245996}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6ee6d10e5016b40974a515d283da71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 5
 --- !u!114 &114920393941638310
 MonoBehaviour:
   m_ObjectHideFlags: 1
