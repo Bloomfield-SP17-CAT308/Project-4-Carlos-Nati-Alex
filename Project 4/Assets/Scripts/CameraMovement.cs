@@ -23,6 +23,9 @@ public class CameraMovement : NetworkBehaviour {
 	private CursorMode cursorMode = CursorMode.ScreenUI;
 	private float currentDistance;
 
+	private AudioSource music;
+	private float delayBetweenLoop = 10f;
+
 	public Transform PlayerTransform {
 		get { return playerTransform; }
 		set {
@@ -40,16 +43,29 @@ public class CameraMovement : NetworkBehaviour {
 	}
 
 	public void Start() {
+		if (!player.isLocalPlayer)
+			return;
 		playerOrientation = transform.FindChild("Player Orientation");
 		transform.rotation = Quaternion.Euler(30, transform.eulerAngles.y, transform.eulerAngles.z);
 
 		currentDistance = defaultDistance;
 		ToggleCursorMode();
+
+		music = GetComponent<AudioSource>();
+		if (player.isServer)
+			music.Play();
 	}
 
 	public void Update() {
 		if (!player.isLocalPlayer)
 			return;
+
+		if (music.isPlaying && music.time >= music.clip.length - 2f) {
+			music.time = 0;
+			music.Stop();
+			music.PlayDelayed(delayBetweenLoop);
+		}
+
 		deltaRotation = default(Vector3);
 
 		currentDistance -= Input.GetAxis("Mouse ScrollWheel") * dollySensitivity * Time.deltaTime;

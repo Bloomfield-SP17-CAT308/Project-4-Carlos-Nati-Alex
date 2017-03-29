@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4264002356319572}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4174091998576798}
   - component: {fileID: 33920765947315800}
   - component: {fileID: 23046033824121696}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Leg 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 4963781983990538}
   - component: {fileID: 65726663963025716}
   - component: {fileID: 114555769609206562}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Crafting Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 4353111573890294}
   - component: {fileID: 33056591804556904}
   - component: {fileID: 23969670289837638}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Leg 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 4071038504791172}
   - component: {fileID: 33693776532417660}
   - component: {fileID: 23679525323044730}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Leg 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 4638565564934710}
   - component: {fileID: 33878140702017024}
   - component: {fileID: 23223982212564650}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 4058730054416230}
   - component: {fileID: 33110566751875514}
   - component: {fileID: 23414231874725182}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 4703662021611856}
   - component: {fileID: 33595144087846214}
   - component: {fileID: 23470331941519616}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Leg 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4904966671281468}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hammer 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 4579380611672360}
   - component: {fileID: 33945899456892112}
   - component: {fileID: 23107179710356570}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 4873893758545162}
   - component: {fileID: 33839972312305764}
   - component: {fileID: 23462249178616878}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 4083892816935098}
   - component: {fileID: 33062683256646442}
   - component: {fileID: 23981759114187586}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,8 +365,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1072311223658442}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -18.94, y: 6.74, z: -0.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -18.94, y: 6.46, z: -0.6}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 4638565564934710}
   - {fileID: 4071038504791172}

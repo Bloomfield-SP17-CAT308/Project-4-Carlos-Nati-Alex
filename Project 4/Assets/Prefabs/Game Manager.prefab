@@ -76,7 +76,7 @@ MonoBehaviour:
   - {fileID: 1416746390245996, guid: c93593cfaf78b14479d2afc19e4acecb, type: 2}
   - {fileID: 1145990131330550, guid: 9a8c4032388f7a54ea22f33717c1a944, type: 2}
   - {fileID: 1588245817790952, guid: 3ab759f8fc6b4aa4aab29669fd91c43f, type: 2}
-  m_CustomConfig: 0
+  m_CustomConfig: 1
   m_MaxConnections: 4
   m_ConnectionConfig:
     m_PacketSize: 1500
@@ -105,7 +105,7 @@ MonoBehaviour:
     m_ReactorMaximumReceivedMessages: 1024
     m_ReactorMaximumSentMessages: 1024
     m_MaxPacketSize: 2000
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -129,6 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c082c3148a9949429f885bd8b24e6ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controlsPrefab: {fileID: 1866768831388632, guid: e14e8723894cf904797cc108b2f506b7,
+    type: 2}
 --- !u!114 &114712295649425308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,7 +159,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventPanelPrefab: {fileID: 1902596131215978, guid: d60a9f91e18b7574d8170faf2b69703b,
     type: 2}
-  craftItemPrefab: {fileID: 1912990679055428, guid: 58eea0bd7baa69447b48b85d62043c57,
+  craftItemPanelPrefab: {fileID: 1912990679055428, guid: 58eea0bd7baa69447b48b85d62043c57,
     type: 2}
   droppedItemEffect: {fileID: 1303224817137996, guid: 01dab6d253d510c49963f5506b92ed81,
     type: 2}
+  audioSFX:
+  - {fileID: 8300000, guid: 0aec64522bf2e6f4881e38a6ab3de92a, type: 3}
+  - {fileID: 8300000, guid: 8ae1075e2ea4b0e4ba450ce9c1de95d4, type: 3}
+  - {fileID: 8300000, guid: 74b2966bd4bfccc4384eff2ce1343bd1, type: 3}
+  - {fileID: 8300000, guid: b16b4832e902a2c48a2a5daf3d61b240, type: 3}

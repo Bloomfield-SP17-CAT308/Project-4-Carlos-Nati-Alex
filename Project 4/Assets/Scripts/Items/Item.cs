@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using UnityEngine;
-using UnityEditor;
 
 public class Item {
 	protected int itemId;
@@ -82,6 +81,10 @@ public class Item {
 		}
 	}
 
+	public List<int>[] CraftingRecipe {
+		get { return craftingRecipe; }
+	}
+
 	public bool Craftable {
 		get { return (craftingRecipe != null); }
 	}
@@ -95,7 +98,10 @@ public class Item {
 		get { return spriteFilePath; }
 		set {
 			spriteFilePath = value;
-			itemSprite = AssetDatabase.LoadAssetAtPath<Sprite>(spriteFilePath);
+			//itemSprite = AssetDatabase.LoadAssetAtPath<Sprite>(spriteFilePath); //Editor Only
+			int index = spriteFilePath.LastIndexOf('.');
+			string pathNoExtension = (index == -1) ? spriteFilePath : spriteFilePath.Substring(0, index);
+			itemSprite = Resources.Load<Sprite>(pathNoExtension);
 		}
 	}
 
@@ -108,7 +114,10 @@ public class Item {
 		get { return prefabFilePath; }
 		set {
 			prefabFilePath = value;
-			itemPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabFilePath);
+			//itemPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabFilePath); //Editor Only
+			int index = prefabFilePath.LastIndexOf('.');
+			string pathNoExtension = (index == -1) ? prefabFilePath : prefabFilePath.Substring(0, index);
+			itemPrefab = Resources.Load<GameObject>(pathNoExtension);
 		}
 	}
 

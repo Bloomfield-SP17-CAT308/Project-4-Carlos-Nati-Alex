@@ -5,7 +5,6 @@ using System.Text;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
-using UnityEditor;
 
 public class StandardItems {
 	[XmlArray("Items")]
@@ -18,7 +17,8 @@ public class StandardItems {
 	}
 
 	public static void LoadStandardItems() {
-		string xmlText = File.ReadAllText("Assets/Standard Items.xml");
+		//string xmlText = File.ReadAllText("Assets/Standard Items.xml"); //Doesn't work on build
+		string xmlText = Resources.Load<TextAsset>("Standard Items").text;
 		int index = xmlText.IndexOf('<');
 		if (index > 0)
 			xmlText = xmlText.Substring(index);

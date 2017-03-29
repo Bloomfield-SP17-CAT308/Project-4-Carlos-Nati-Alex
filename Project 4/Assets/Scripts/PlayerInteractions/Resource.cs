@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+//Currently assumes that this gameObject has a DroppedItem script attached to it
 public class Resource : NetworkBehaviour, PlayerInteractable {
 
 	private bool interactableActive = true;
@@ -12,14 +13,23 @@ public class Resource : NetworkBehaviour, PlayerInteractable {
 		set { interactableActive = value; }
 	}
 
+	public void Start() {
+
+	}
+
 	//Collect
 	public void Interact(Player player) {
-		interactableActive = false;
-		if (player.isLocalPlayer)
-			player.GiveItem(GetComponent<DroppedItem>().itemId);
+		if (player.isLocalPlayer) {
+			if (player.GiveItem(GetComponent<DroppedItem>().itemId)) {
+				interactableActive = false;
+				Game.Instance.PlayUIAudioSFX(1);
+			} else
+				return;
+		}
+
 
 		//Collect UI/Wait time
-
-		GameObject.Destroy(gameObject);
+		Game.Instance.AddRespawn(GetComponent<DroppedItem>().itemId, 3, transform.position);
+		Game.Instance.DestroyOnServer(gameObject);
 	}
 }

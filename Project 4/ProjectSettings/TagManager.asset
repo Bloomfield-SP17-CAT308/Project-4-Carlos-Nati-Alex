@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Dropped Items
   - Screen Canvas
+  - UI Audio
   layers:
   - Default
   - TransparentFX

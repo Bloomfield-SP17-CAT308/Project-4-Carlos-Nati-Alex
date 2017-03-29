@@ -1,0 +1,13 @@
+Game Over 
+
+Thanks for Playing!!!!
+
+
+Credits:
+
+
+      Carlos Dalomba:		Natalia Dalomba:		Alexander Deleon:
+* Programming					Modeling				Terrain
+* Audio SFX						Texture					Modeling
+* Particle Effects				Scene Setup				Sprite work
+* Sprite work

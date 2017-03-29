@@ -8,10 +8,12 @@ public class DroppedItem : NetworkBehaviour {
 	public int itemId;
 
 	private ParticleSystem effect;
-	private bool updating = true;
+	private bool pickedUp = false;
 
 	public void Start() {
-		Debug.Log("Start called for a dropped item!");
+		if (GetComponent<Resource>() != null)
+			GetComponent<Resource>().enabled = false;
+		
 		transform.SetParent(GameObject.FindGameObjectWithTag("Dropped Items").transform);
 
 		Mesh mesh = GetComponent<MeshFilter>().mesh;
@@ -30,7 +32,7 @@ public class DroppedItem : NetworkBehaviour {
 	}
 
 	public void Update() {
-		if (updating)
+		if (!pickedUp)
 			transform.Rotate(0, 180 * Time.deltaTime, 0, Space.World);
 	}
 
@@ -45,15 +47,21 @@ public class DroppedItem : NetworkBehaviour {
 		trigger.radius = 1;
 	}
 
-	//COMMANDS CAN ONLY RUN ON SCRIPTS FROM THE PLAYER'S UNIQUE, 1 PLAYER OBJECT!! (Cannot be here in this script)
+	//COMMANDS CAN ONLY RUN ON SCRIPTS FROM THE PLAYER'S UNIQUE, 1 PLAYER OBJECT!!
 	//OR ON SCRIPTS ON A GAMEOBJECT WITH CLIENT AUTHORITY OVER A NON-PLAYER OBJECT
 
 	private IEnumerator PickedUp(Player player) {
 		//Only try, on this client, to give the item to the player if that player is us -- the Local Player.
-		if (player.isLocalPlayer)
-			player.GiveItem(itemId);
+		if (player.isLocalPlayer) {
+			if (player.GiveItem(itemId)) {
+				pickedUp = true;
+				Game.Instance.PlayUIAudioSFX(1);
+			} else {
+				yield break;
+			}
 
-		updating = false;
+		}
+
 
 		//The effect might be null because some Messages like OnTriggerStay are still sent even though this script is not enabled.
 		if (effect != null) {
@@ -70,6 +78,7 @@ public class DroppedItem : NetworkBehaviour {
 			GameObject.Destroy(effect.gameObject);
 		}
 
+		//We don't need this because this runs on all clients including the host, and if it is destroyed on the server, then it will automatically unspawn.
 		//if (isServer)
 		//	NetworkServer.UnSpawn(gameObject);
 		GameObject.Destroy(gameObject);
@@ -77,7 +86,7 @@ public class DroppedItem : NetworkBehaviour {
 	}
 
 	public void OnTriggerStay(Collider other) {
-		if (enabled && other.tag == "Player")
+		if (enabled && !pickedUp && other.tag == "Player")
 			StartCoroutine(PickedUp(other.gameObject.GetComponent<Player>()));
 	}
 }

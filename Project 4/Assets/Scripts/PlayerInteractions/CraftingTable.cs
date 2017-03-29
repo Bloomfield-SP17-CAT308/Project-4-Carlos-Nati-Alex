@@ -17,7 +17,8 @@ public class CraftingTable : MonoBehaviour, PlayerInteractable {
 		if (!player.isLocalPlayer)
 			return;
 
-		Debug.Log("Going to craft!");
-		//Show Crafting Menu
+		player.ShowCraftItemPanel();
 	}
+
+	
 }

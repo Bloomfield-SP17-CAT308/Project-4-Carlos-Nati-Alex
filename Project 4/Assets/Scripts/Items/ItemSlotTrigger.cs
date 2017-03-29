@@ -6,29 +6,35 @@ using UnityEngine.EventSystems;
 
 public class ItemSlotTrigger : EventTrigger {
 
-	private int inventIndex = -1;
+	private int index = -1;
 
 	private RectTransform inventPanel;
+	private RectTransform craftItemPanel;
 	private Vector3 originalPos;
 	private Transform origParent;
 	private Player player;
 
-	public int InventIndex {
-		get { return inventIndex; }
+	private bool isInInvent;
+
+	public int Index {
+		get { return index; }
 	}
 
 	public void Start() {
-		inventIndex = int.Parse(transform.parent.name.Substring(5));
+		index = int.Parse(transform.parent.name.Substring(5));
 
 		originalPos = transform.localPosition;
 		origParent = transform.parent;
 
 		player = Game.Instance.LocalPlayer;
 		inventPanel = player.InventoryPanel.transform as RectTransform;
+		craftItemPanel = player.CraftItemPanel.transform as RectTransform;
+
+		isInInvent = origParent.parent.name.Contains("Item Inventory Panel");
 	}
 
 	public void BeginItemDrag() {
-		transform.SetParent(transform.parent.parent);
+		transform.SetParent(Game.ScreenCanvas);
 	}
 
 	public void DragItemWithMouse() {
@@ -41,7 +47,8 @@ public class ItemSlotTrigger : EventTrigger {
 		transform.SetParent(origParent);
 		transform.localPosition = originalPos;
 
-		if (RectTransformUtility.RectangleContainsScreenPoint(inventPanel, endPos)) {
+		//Bad Note: Copy and pasted here..
+		if (inventPanel.gameObject.activeSelf && RectTransformUtility.RectangleContainsScreenPoint(inventPanel, endPos)) {
 			int childCount = inventPanel.childCount;
 			RectTransform child;
 			for (int i = 0; i < childCount; i++) {
@@ -49,13 +56,31 @@ public class ItemSlotTrigger : EventTrigger {
 				if (!child.name.StartsWith("Slot"))
 					continue;
 				if (RectTransformUtility.RectangleContainsScreenPoint(child, endPos)) {
-					player.SwapItems(inventIndex, child.FindChild("Item").GetComponent<ItemSlotTrigger>().inventIndex);
-					break;
+					if (isInInvent)
+						player.SwapItems(index, child.FindChild("Item").GetComponent<ItemSlotTrigger>().index);
+					else
+						player.SwapWithCraftItem(child.FindChild("Item").GetComponent<ItemSlotTrigger>().index, index);
+					return;
 				}
 			}
+		} else if (craftItemPanel.gameObject.activeSelf && RectTransformUtility.RectangleContainsScreenPoint(craftItemPanel, endPos)) {
+			int childCount = craftItemPanel.childCount;
+			RectTransform child;
+			for (int i = 0; i < childCount; i++) {
+				child = craftItemPanel.GetChild(i) as RectTransform;
+				if (!child.name.StartsWith("Slot"))
+					continue;
 
+				if (RectTransformUtility.RectangleContainsScreenPoint(child, endPos)) {
+					if (isInInvent)
+						player.SwapWithCraftItem(index, child.FindChild("Item").GetComponent<ItemSlotTrigger>().index);
+					else
+						player.SwapTwoCraftItems(child.FindChild("Item").GetComponent<ItemSlotTrigger>().index, index);
+					return;
+				}
+			}
 		} else {
-			player.DropItem(inventIndex);
+			player.DropItem(index);
 		}
 	}
 }
